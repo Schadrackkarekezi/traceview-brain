@@ -2,7 +2,7 @@
 
 A GTM data assistant that answers plain-English questions with real SQL, retrieved account context, or both fused into one answer - not just a chatbot wrapper around a database. Read-only enforced at the database privilege level, evaluated by an independent LLM judge, built on GTM data for a fictional SaaS business.
 
-**Live demo** (the original Traceview, before the HydraDB company-brain layer described below): [traceviewfrontend-production.up.railway.app](https://traceviewfrontend-production.up.railway.app)
+**Status:** not deployed yet - this version runs locally (see [Running it locally](#running-it-locally)).
 
 ![CI](https://github.com/Schadrackkarekezi/traceview-brain/actions/workflows/ci.yml/badge.svg)
 
