@@ -1,0 +1,42 @@
+[
+  {
+    "term": "active deal",
+    "definition": "A deal whose stage is one of discovery, technical_validation, business_case, or negotiation - i.e. still open, not yet closed_won or closed_lost. Filter with deals.stage NOT IN ('closed_won', 'closed_lost'), not a date-based check."
+  },
+  {
+    "term": "win rate",
+    "definition": "closed_won deals divided by all closed deals (closed_won + closed_lost) in the filtered set. Never divide by all deals - open deals are neither a win nor a loss and must be excluded from both the numerator and the denominator."
+  },
+  {
+    "term": "average deal size",
+    "definition": "When the question asks for 'average deal size' or 'average deal value' with no other qualifier, use the average deal_value across closed_won deals only. If the question names its own filter instead (e.g. 'average deal value for a specific workload or stage'), use only that filter - do not also add closed_won unless the question asks for it."
+  },
+  {
+    "term": "capacity contract",
+    "definition": "The committed spend an account agrees to when a deal closes won (capacity_contracts.committed_amount). This is not the deal value - a deal is the negotiated opportunity; the contract is what gets created from it once won, and consumption_usage tracks draw-down against it over time."
+  },
+  {
+    "term": "consumption",
+    "definition": "The credits an account has actually used against its capacity contract in a given month (consumption_usage.credits_consumed). Not the same as commitment - an account can be under-consuming (using far less than committed_amount / 12 per month) even while its contract status is still 'active'."
+  },
+  {
+    "term": "under-consumption",
+    "definition": "An account whose recent monthly credits_consumed is trending below what capacity_contracts.committed_amount would imply on a straight-line monthly basis (committed_amount / 12). This is the primary renewal-risk signal - derive it from the consumption_usage trend itself, not from capacity_contracts.status alone, since status is a label applied to the account, not a live calculation."
+  },
+  {
+    "term": "POC",
+    "definition": "The technical evaluation stage of a deal, tracked in deals.poc_status (not_started, in_progress, passed, failed) independently of deals.stage. A deal can sit in the technical_validation stage with poc_status still in_progress - poc_status is the outcome of that work, not a synonym for the stage."
+  },
+  {
+    "term": "workload expansion",
+    "definition": "An account adopting an additional workload beyond the one(s) it already holds an active capacity_contracts for. Candidates are accounts with strong, non-declining consumption in their current workload and no deal yet in a different workload - not accounts with declining usage, which signals risk, not readiness to expand."
+  },
+  {
+    "term": "partner-sourced",
+    "definition": "A deal where deals.partner_id is not null - a systems integrator, cloud marketplace, or ISV originated or co-sold it. This is a property of the deal, not of the account's general partner history."
+  },
+  {
+    "term": "NRR",
+    "definition": "Net Revenue Retention - the share of a prior period's committed capacity still retained (renewed or expanded), excluding any new-account revenue. This schema has no single precomputed NRR column; answering an NRR question means comparing capacity_contracts.committed_amount on renewal/expansion contracts against the value they replaced, over a specific period. If the question doesn't name a comparison period, decline in chat mode and ask which one - don't assume a window."
+  }
+]

@@ -1,0 +1,73 @@
+{
+  "entity_types": [
+    {
+      "table": "accounts",
+      "kind": "dimension",
+      "description": "A company Traceview sells to - segmented by size tier and industry.",
+      "aliases": ["account", "accounts", "customer", "customers", "client", "clients", "company"]
+    },
+    {
+      "table": "workloads",
+      "kind": "dimension",
+      "description": "A category of usage an account can adopt - Data Warehousing, Storage, Data Sharing - not a fixed SKU, a workload to expand into.",
+      "aliases": ["workload", "workloads", "product", "products", "offering", "use case"]
+    },
+    {
+      "table": "account_team",
+      "kind": "dimension",
+      "description": "The overlay team on an account - AE (owns the relationship), SE (runs technical validation), or CSM (owns post-sale consumption health).",
+      "aliases": ["rep", "reps", "account team", "team member", "ae", "se", "csm", "salesperson", "staff"]
+    },
+    {
+      "table": "partners",
+      "kind": "dimension",
+      "description": "A systems integrator, cloud marketplace, or ISV that can source or co-sell a deal.",
+      "aliases": ["partner", "partners", "reseller", "si", "marketplace", "cloud marketplace"]
+    },
+    {
+      "table": "deals",
+      "kind": "fact",
+      "description": "A sales opportunity for one workload at one account, tracked through a technical-validation-heavy funnel - a transactional event with a lifecycle, not reference data.",
+      "aliases": ["deal", "deals", "opportunity", "opportunities", "pipeline", "sale", "sales"]
+    },
+    {
+      "table": "capacity_contracts",
+      "kind": "fact",
+      "description": "The committed spend created when a deal closes won - an account draws down against this via consumption, it is not the deal itself.",
+      "aliases": ["contract", "contracts", "capacity", "commitment", "capacity contract"]
+    },
+    {
+      "table": "consumption_usage",
+      "kind": "fact",
+      "description": "Monthly credit burn per account per workload - the actual usage an account's capacity contract is measured against.",
+      "aliases": ["consumption", "usage", "credits", "credit consumption", "burn", "burn rate"]
+    },
+    {
+      "table": "activities",
+      "kind": "fact",
+      "description": "A logged interaction tied to a deal - discovery call, POC milestone, exec review, QBR, renewal call - an event, not reference data.",
+      "aliases": ["activity", "activities", "interaction", "touchpoint", "call", "calls", "meeting", "meetings", "poc", "qbr"]
+    },
+    {
+      "table": "marketing_touches",
+      "kind": "fact",
+      "description": "A logged marketing engagement with an account - webinar, summit, paid ad, partner co-sell.",
+      "aliases": ["marketing", "campaign", "campaigns", "touch", "touches", "webinar", "summit"]
+    }
+  ],
+  "relationship_labels": {
+    "account_team.account_id": "belongs to",
+    "deals.account_id": "belongs to",
+    "deals.workload_id": "is for",
+    "deals.owner_team_member_id": "owned by",
+    "deals.partner_id": "sourced by",
+    "capacity_contracts.account_id": "belongs to",
+    "capacity_contracts.workload_id": "is for",
+    "capacity_contracts.deal_id": "created from",
+    "consumption_usage.account_id": "consumed by",
+    "consumption_usage.workload_id": "is for",
+    "activities.deal_id": "logged against",
+    "activities.team_member_id": "performed by",
+    "marketing_touches.account_id": "targets"
+  }
+}

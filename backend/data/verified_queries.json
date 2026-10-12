@@ -1,0 +1,52 @@
+[
+  {
+    "question": "How many accounts do we have?",
+    "sql": "SELECT COUNT(*) FROM accounts;",
+    "verified_via": "eval_set.json (simple) - passed deterministic + LLM-judge check"
+  },
+  {
+    "question": "List all workloads.",
+    "sql": "SELECT name FROM workloads;",
+    "verified_via": "eval_set.json (simple) - passed deterministic + LLM-judge check"
+  },
+  {
+    "question": "How many deals are closed_lost?",
+    "sql": "SELECT COUNT(*) FROM deals WHERE stage = 'closed_lost'",
+    "verified_via": "eval_set.json (simple) - passed deterministic + LLM-judge check"
+  },
+  {
+    "question": "How many accounts are in the enterprise segment?",
+    "sql": "SELECT COUNT(*) FROM accounts WHERE segment = 'enterprise'",
+    "verified_via": "eval_set.json (simple) - passed deterministic + LLM-judge check"
+  },
+  {
+    "question": "How many capacity contracts are currently active?",
+    "sql": "SELECT COUNT(*) FROM capacity_contracts WHERE status = 'active';",
+    "verified_via": "eval_set.json (simple) - passed deterministic + LLM-judge check"
+  },
+  {
+    "question": "List all partners and their partner type.",
+    "sql": "SELECT name, partner_type FROM partners;",
+    "verified_via": "eval_set.json (simple) - passed deterministic + LLM-judge check"
+  },
+  {
+    "question": "Which accounts have capacity contracts marked at_risk, along with their industry and segment?",
+    "sql": "SELECT ac.name AS account_name, ac.industry, ac.segment\nFROM accounts ac\nJOIN capacity_contracts cc ON ac.account_id = cc.account_id\nWHERE cc.status = 'at_risk';",
+    "verified_via": "eval_set.json (join) - passed deterministic + LLM-judge check"
+  },
+  {
+    "question": "What is the total committed amount across active capacity contracts, broken down by workload?",
+    "sql": "SELECT w.name AS workload_name, SUM(cc.committed_amount) AS total_committed_amount\nFROM capacity_contracts cc\nJOIN workloads w ON cc.workload_id = w.workload_id\nWHERE cc.status = 'active'\nGROUP BY w.name;",
+    "verified_via": "eval_set.json (join) - passed deterministic + LLM-judge check"
+  },
+  {
+    "question": "How many capacity contracts exist for the Data Sharing workload?",
+    "sql": "SELECT COUNT(*)\nFROM capacity_contracts\nJOIN workloads ON capacity_contracts.workload_id = workloads.workload_id\nWHERE workloads.name = 'Data Sharing';",
+    "verified_via": "eval_set.json (join) - passed deterministic + LLM-judge check"
+  },
+  {
+    "question": "How many deals were logged for accounts in the retail industry?",
+    "sql": "SELECT COUNT(*) AS deal_count \nFROM deals \nJOIN accounts ON deals.account_id = accounts.account_id \nWHERE accounts.industry = 'retail';",
+    "verified_via": "eval_set.json (join) - passed deterministic + LLM-judge check"
+  }
+]

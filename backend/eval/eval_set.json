@@ -1,0 +1,113 @@
+[
+  {
+    "question": "How many accounts do we have?",
+    "category": "simple",
+    "expected_sql_pattern": "count",
+    "expected_row_count": 1
+  },
+  {
+    "question": "List all workloads.",
+    "category": "simple",
+    "expected_row_count": 3
+  },
+  {
+    "question": "How many deals are closed_lost?",
+    "category": "simple",
+    "expected_sql_pattern": "closed_lost",
+    "expected_row_count": 1
+  },
+  {
+    "question": "How many accounts are in the enterprise segment?",
+    "category": "simple",
+    "expected_sql_pattern": "enterprise",
+    "expected_row_count": 1
+  },
+  {
+    "question": "How many capacity contracts are currently active?",
+    "category": "simple",
+    "expected_sql_pattern": "active",
+    "expected_row_count": 1
+  },
+  {
+    "question": "List all partners and their partner type.",
+    "category": "simple",
+    "expected_row_count": 8
+  },
+  {
+    "question": "Which accounts have capacity contracts marked at_risk, along with their industry and segment?",
+    "category": "join",
+    "expected_sql_pattern": "at_risk",
+    "expected_row_count": 9
+  },
+  {
+    "question": "What is the total committed amount across active capacity contracts, broken down by workload?",
+    "category": "join",
+    "expected_sql_pattern": "group by",
+    "expected_row_count": 3
+  },
+  {
+    "question": "Which reps logged the most POCs on deals for the Data Sharing workload?",
+    "category": "join"
+  },
+  {
+    "question": "How many capacity contracts exist for the Data Sharing workload?",
+    "category": "join",
+    "expected_row_count": 1
+  },
+  {
+    "question": "Which partners have sourced the most deals?",
+    "category": "join"
+  },
+  {
+    "question": "How many deals were logged for accounts in the retail industry?",
+    "category": "join",
+    "expected_sql_pattern": "retail",
+    "expected_row_count": 1
+  },
+  {
+    "question": "Which accounts have more than one deal, and how many deals does each have?",
+    "category": "join",
+    "expected_sql_pattern": "group by"
+  },
+  {
+    "question": "Which accounts and which partner sourced the deal, for deals that closed won through a partner?",
+    "category": "multi_hop"
+  },
+  {
+    "question": "For accounts with an at_risk capacity contract, which workload are they under-consuming on, and who is their CSM?",
+    "category": "multi_hop"
+  },
+  {
+    "question": "Which employees performed activities on deals for accounts in the financial_services industry?",
+    "category": "multi_hop"
+  },
+  {
+    "question": "Which workloads have the highest total consumption among financial_services accounts?",
+    "category": "multi_hop"
+  },
+  {
+    "question": "What's our customer satisfaction score?",
+    "category": "ambiguous",
+    "expect_failure": true
+  },
+  {
+    "question": "What's our projected revenue for next quarter?",
+    "category": "ambiguous",
+    "expect_failure": true
+  },
+  {
+    "question": "How does our NPS compare to competitors?",
+    "category": "ambiguous",
+    "expect_failure": true
+  },
+  {
+    "question": "Which accounts are about to churn based on sentiment in their support tickets?",
+    "category": "ambiguous",
+    "expect_failure": true
+  },
+  {
+    "question": "What is our current NRR?",
+    "category": "ambiguous",
+    "expect_failure": true
+  }
+]

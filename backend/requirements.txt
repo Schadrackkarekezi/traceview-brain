@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+pydantic
+openai
+psycopg[binary]
+pgvector
+sentence-transformers
+python-dotenv
+networkx
+alembic
+sqlalchemy
+hydradb-sdk>=2.1.1,<3

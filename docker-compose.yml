@@ -1,0 +1,49 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: traceview
+      POSTGRES_PASSWORD: traceview_dev_only
+      POSTGRES_DB: traceview
+    ports:
+      # DB_PORT (set in a root .env) moves the host side only - for a
+      # machine where something else already owns localhost:5432, e.g. a
+      # Homebrew Postgres, which silently shadows this container's port.
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - traceview_pgdata:/var/lib/postgresql/data
+      - ./backend/data/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U traceview -d traceview"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    environment:
+      # .env is written for host-based local dev, where Postgres is reached
+      # via localhost:5432 (the port mapping below exposes it that way).
+      # Inside the Docker network, "localhost" would resolve to the backend
+      # container itself, not the db service - these two overrides (which
+      # take precedence over the same keys in env_file) are what actually
+      # let the container reach Postgres by its service name instead.
+      DATABASE_URL: postgresql://traceview:traceview_dev_only@db:5432/traceview
+      DATABASE_URL_READONLY: postgresql://traceview_readonly:traceview_readonly_dev_only@db:5432/traceview
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  traceview_pgdata:

@@ -1,0 +1,66 @@
+[
+  {
+    "question": "How should I handle an objection about unpredictable pricing?",
+    "account_id": null,
+    "expected_source_type": "enablement_content",
+    "expected_title": "Objection Handling: Consumption Pricing Feels Unpredictable"
+  },
+  {
+    "question": "What should I say when an account already has a data warehouse?",
+    "account_id": null,
+    "expected_source_type": "enablement_content",
+    "expected_title": "Objection Handling: We Already Have a Data Warehouse",
+    "known_limitation": "Target document never appears even in top-8 - confirmed a genuine embedding-similarity limitation (this doc and the 'Legacy Data Warehouses' battlecard share too much vocabulary for all-MiniLM-L6-v2 to separate at this content length), not a fixable question phrasing. Kept in the suite as an honest baseline, not curated away."
+  },
+  {
+    "question": "How do capacity contracts and true-ups work?",
+    "account_id": null,
+    "expected_source_type": "enablement_content",
+    "expected_title": "FAQ: How Do Capacity Contracts and True-Ups Work?"
+  },
+  {
+    "question": "How do I expand an account from data warehousing into sharing data with partners?",
+    "account_id": null,
+    "expected_source_type": "enablement_content",
+    "expected_title": "Workload Expansion Play: Data Warehousing to Data Sharing"
+  },
+  {
+    "question": "How should I position against a legacy on-prem data warehouse competitor?",
+    "account_id": null,
+    "expected_source_type": "enablement_content",
+    "expected_title": "Competitive Positioning vs. Legacy Data Warehouses"
+  },
+  {
+    "question": "What should I watch for to catch consumption risk early?",
+    "account_id": null,
+    "expected_source_type": "enablement_content",
+    "expected_title": "Sales Play: Identifying Under-Consumption Risk Early"
+  },
+  {
+    "question": "How does marketplace co-sell with major cloud providers work?",
+    "account_id": null,
+    "expected_source_type": "enablement_content",
+    "expected_title": "Partner Co-Sell Motion with Cloud Marketplaces"
+  },
+  {
+    "question": "What is a good POC checklist?",
+    "account_id": null,
+    "expected_source_type": "enablement_content",
+    "expected_title": "FAQ: POC Best Practices and Technical Validation Checklist"
+  },
+  {
+    "question": "Why is consumption declining and who owns the renewal risk?",
+    "account_id": 5,
+    "expected_source_type": "account_note"
+  },
+  {
+    "question": "Why is consumption declining and who owns the renewal risk?",
+    "account_id": 18,
+    "expected_source_type": "account_note"
+  },
+  {
+    "question": "What's the latest QBR update on this account?",
+    "account_id": 20,
+    "expected_source_type": "account_note"
+  }
+]

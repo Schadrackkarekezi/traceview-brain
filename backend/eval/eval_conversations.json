@@ -1,0 +1,41 @@
+[
+  {
+    "name": "at_risk_accounts_by_industry_followup",
+    "turns": [
+      {
+        "question": "Which accounts have capacity contracts marked at_risk?",
+        "expected_sql_pattern": "at_risk"
+      },
+      {
+        "question": "Now break that down by industry instead of listing each account.",
+        "expected_sql_pattern": "group by"
+      }
+    ]
+  },
+  {
+    "name": "committed_amount_then_meta_question",
+    "turns": [
+      {
+        "question": "What is the total committed amount across active capacity contracts?",
+        "expected_sql_pattern": "active"
+      },
+      {
+        "question": "Are you sure that's counting only active contracts and not all of them?",
+        "expect_chat": true
+      }
+    ]
+  },
+  {
+    "name": "data_sharing_contracts_then_count_followup",
+    "turns": [
+      {
+        "question": "How many capacity contracts exist for the Data Sharing workload?",
+        "expected_row_count": 1
+      },
+      {
+        "question": "And how many of those are at_risk?",
+        "expected_row_count": 1
+      }
+    ]
+  }
+]

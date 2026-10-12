@@ -1,0 +1,135 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Backend tests
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: traceview
+          POSTGRES_PASSWORD: traceview_dev_only
+          POSTGRES_DB: traceview
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U traceview -d traceview"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        working-directory: backend
+        run: pip install -r requirements-dev.txt
+
+      - name: Apply schema via Alembic (creates tables + the read-only role tests exercise)
+        working-directory: backend
+        env:
+          DATABASE_URL: postgresql://traceview:traceview_dev_only@localhost:5432/traceview
+        run: alembic upgrade head
+
+      # test_retrieval.py and test_verified_queries.py query real seeded,
+      # embedded rows (document_chunks, verified_queries) - against the
+      # bare schema from the step above those tables are empty and every
+      # one of those tests fails. Same seed chain local dev runs by hand.
+      - name: Seed structured + unstructured data and embed it
+        working-directory: backend
+        run: |
+          python -m scripts.seed_db
+          python -m scripts.seed_unstructured
+          python -m scripts.embed_content
+          python -m scripts.seed_glossary
+          python -m scripts.seed_verified_queries
+
+      - name: Run pytest
+        working-directory: backend
+        run: pytest -v
+
+  frontend-build:
+    name: Frontend build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build
+        working-directory: frontend
+        run: npm run build
+
+  eval:
+    name: Agent eval (manual trigger only - costs real API money)
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: traceview
+          POSTGRES_PASSWORD: traceview_dev_only
+          POSTGRES_DB: traceview
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U traceview -d traceview"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        working-directory: backend
+        run: pip install -r requirements-dev.txt
+
+      - name: Apply schema via Alembic
+        working-directory: backend
+        env:
+          DATABASE_URL: postgresql://traceview:traceview_dev_only@localhost:5432/traceview
+        run: alembic upgrade head
+
+      - name: Seed structured + unstructured data and embed it
+        working-directory: backend
+        run: |
+          python -m scripts.seed_db
+          python -m scripts.seed_unstructured
+          python -m scripts.embed_content
+          python -m scripts.seed_glossary
+          python -m scripts.seed_verified_queries
+
+      - name: Run eval suite
+        working-directory: backend
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python -m scripts.run_eval
+
+# Deploy to Railway is handled by Railway's own GitHub integration (each
+# service's "Wait for CI" setting), not a job here - that already gates
+# deploys on this workflow passing, so a second deploy mechanism here would
+# just double-deploy on every push instead of adding anything.

@@ -1,0 +1,12 @@
+[
+  {"question": "How many accounts are marked at_risk?", "expected_response_type": "sql"},
+  {"question": "List all workloads.", "expected_response_type": "sql"},
+  {"question": "What is the total committed amount across active capacity contracts?", "expected_response_type": "sql"},
+  {"question": "How should I handle an objection about unpredictable pricing?", "expected_response_type": "unstructured"},
+  {"question": "What's a good POC checklist?", "expected_response_type": "unstructured"},
+  {"question": "How does marketplace co-sell with major cloud providers work?", "expected_response_type": "unstructured"},
+  {"question": "Why is Sinclair Care Partners consumption declining?", "expected_response_type": "hybrid"},
+  {"question": "Why is Coastline Municipal Systems consumption declining?", "expected_response_type": "hybrid"},
+  {"question": "What's our customer satisfaction score?", "expected_response_type": "chat"},
+  {"question": "What's our projected revenue for next quarter?", "expected_response_type": "chat"}
+]

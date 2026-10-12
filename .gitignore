@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Data
+backend/query_logs.jsonl
+backend/eval_results.json
+
+# Env
+.env
+
+# Node (for later, frontend/)
+node_modules/
+dist/
+
+# OS
+.DS_Store
+.pytest_cache/
